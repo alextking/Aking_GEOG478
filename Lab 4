@@ -1,3 +1,21 @@
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   crossorigin=""/>
+<!DOCTYPE html> 
+<!-- First line of code in all of your HTML documents. Declaration of version of HTML -->
+
+<html> 
+<!-- Container for the document-->
+
+    <!-- Pull in the code within an external javascript file (located in the same directory) -->
+    <script src='script.js'></script>
+
+    <!-- Setting a creative title for the page -->
+    <head>
+      <title> Lab 4 </title>
+    </head>
+
+    <!-- The body of our document which contains things to be rendered by the browser-->
+    <body> 
+
+        <!-- Make a button -->
+        <input type='button' value='Click Me!'></input>
+    </body>
+</html>
