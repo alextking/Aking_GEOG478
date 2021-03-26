@@ -1,24 +1,142 @@
-<!DOCTYPE html>
-<!-- First line of code in all of your HTML documents. Declaration of version of HTML -->
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<html>
-<!-- Container for the document-->
+    <title>Alex's Custom Program</title>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <!-- Pull in the code within an external javascript file (located in the same directory) -->
-    <script src='./script.js'></script>
-    <script src='./data.js'></script>
-
-    <!-- Setting a creative title for the page -->
-    <head>
-      <title> Lab 4 </title>
-    </head>
-
-    <!-- The body of our document which contains things to be rendered by the browser-->
-    <body>
-            <!-- Make a button -->
-            <input type='button' value='Click Me!' onclick='Run();'></input>
 
 
-    </body>
+
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+  </head>
+  <body class="d-flex h-100 text-center text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="mb-auto">
+    <div>
+      <h3 class="float-md-start mb-0">Alex's Custom Program</h3>
+      <nav class="nav nav-masthead justify-content-center float-md-end">
+        <a class="nav-link active" aria-current="page" href="#">Home</a>
+
+      </nav>
+    </div>
+  </header>
+
+  <main class="px-3">
+
+
+    <p>
+         <div id='map' style="width: 600px; height: 400px;"></div>
+
+         <script>
+         	var map = L.map('map').fitWorld();
+
+         	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+         		maxZoom: 18,
+         		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+         			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+         		id: 'mapbox/streets-v11',
+         		tileSize: 512,
+         		zoomOffset: -1
+         	}).addTo(map);
+
+
+         	function onLocationFound(e) {
+         		var radius = e.accuracy / 2;
+
+         		L.marker(e.latlng).addTo(map)
+         			.bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+         		L.circle(e.latlng, radius).addTo(map);
+         	}
+
+         	function onLocationError(e) {
+         		alert(e.message);
+         	}
+
+
+
+         	map.on('locationfound', onLocationFound);
+         	map.on('locationerror', onLocationError);
+
+         	map.locate({setView: true, maxZoom: 16});
+
+          L.circle([30.6099, -96.3404], 500, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5
+          }).addTo(map).bindPopup("I am Kyle Field");
+
+
+          <!-- -->
+          var greenIcon = L.icon({
+              iconUrl: 'leaf-green.png',
+              shadowUrl: 'leaf-shadow.png',
+
+              iconSize:     [38, 95], // size of the icon
+              shadowSize:   [50, 64], // size of the shadow
+              iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+              shadowAnchor: [4, 62],  // the same for the shadow
+              popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+          var redIcon = L.icon({
+              iconUrl: 'leaf-red.png',
+              shadowUrl: 'leaf-shadow.png',
+
+              iconSize:     [38, 95], // size of the icon
+              shadowSize:   [50, 64], // size of the shadow
+              iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+              shadowAnchor: [4, 62],  // the same for the shadow
+              popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+          L.marker([30.61778, -96.33662], {icon: greenIcon}).bindPopup("I am the O&M Building.").addTo(map);
+          L.marker([30.61585, -96.34080], {icon: redIcon}).bindPopup("I am the Academic Building.").addTo(map);
+
+          <!-- -->
+
+          var popup = L.popup();
+
+          function onMapClick(e) {
+            popup
+              .setLatLng(e.latlng)
+              .setContent("You clicked the map at " + e.latlng.toString())
+              .openOn(map);
+          }
+
+          map.on('click', onMapClick);
+
+
+         </script>
+    </p>
+
+
+
+
+
+
+  </main>
+
+
+
+  <footer class="mt-auto text-white-50">
+      <p>Alex King &#169; 2021</p>
+  </footer>
+</div>
+
+
+
+  </body>
 </html>
